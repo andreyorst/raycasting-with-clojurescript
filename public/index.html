@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <script src="js/compiled/main.js"></script>
+  </head>
+  <body>
+    <canvas id="raycaster" width="512" height="224"></canvas></div>
+    <div>
+      <input type="range" id="rayCountSlider"
+             min="10" max="256" step="1"></input>
+      <label for="rayCountSlider">Ray Count: </label>
+      <output name="rayCountValue" id="rayCountOutput"></output>
+    </div>
+    <div>
+      <input type="range" id="fovSlider"
+             min="10" max="360" step="1"></input>
+      <label for="fovSlider">Field of View: </label>
+      <output name="fovSliderValue" id="fovSliderOutput"></output>
+    </div>
+    <div>
+      <input type="checkbox" id="fishEyeCompensation"></input>
+      <label for="fishEyeCompensation"> FishEye compensation</label>
+    </div>
+    <script>
+      window.onload = function() {
+          raycasting.core.init();
+      };
+    </script>
+  </body>
+</html>

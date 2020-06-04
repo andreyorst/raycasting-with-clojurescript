@@ -1,0 +1,14 @@
+* Simple Ray Casting with ClojureScript
+This is a repository with the  code of the raycasting engine I've made
+during [[https://andreyorst.gitlab.io/posts/2020-06-04-simple-ray-casting-with-clojurescript/][this blog post]]. Feel free to read the code, post suggestions or
+borrow ideas.
+
+** How to build
+If you have [[https://github.com/thheller/shadow-cljs][shadow-cljs]] installed simply run:
+
+#+begin_example
+  $ npx shadow-cljs release app
+#+end_example
+
+** How to run
+Open =index.html= from =public/= in your favorite browser.
