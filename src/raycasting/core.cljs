@@ -215,48 +215,51 @@
   (doseq [line stage]
     (apply draw-line line)))
 
-(defn detect-collision
+(defn collides?
   "Check if `path` intersects with any `stage` walls."
   [stage path]
-  (loop [wall (first stage)
-         stage (rest stage)]
-    (if (intersect? wall path)
-      true
-      (when (not (empty? stage))
-        (recur (first stage)
-               (rest stage))))))
+  (loop [stage stage]
+    (when-let [wall (first stage)]
+      (or (intersect? wall path)
+          (recur (rest stage))))))
 
-(defn move-camera
-  "Handles camera movement with key events."
-  [stage key-states]
-  (let [{x :x y :y :as camera} @cam/camera]
-    (when (key-states "Escape")
+(defn move-camera!
+  "Handles `camera` movement within `stage`. Accepts `camera` and
+  `key-states` atoms."
+  [camera key-states stage]
+  (let [{x :x y :y :as current-pos} @camera
+        states @key-states
+        step-size 0.8
+        rotate-angle 1.5
+        extra-step (+ step-size 1.5)]
+
+    (when (states "Escape")
       (input/release-focus)
-      (reset! input/key-states {}))
+      (reset! key-states {}))
 
-    (when (key-states "ArrowRight")
-      (if (key-states "Shift")
-        (let [{x' :x y' :y} (cam/strafe camera -2)]
-          (when (not (detect-collision stage [[x y] [x' y']]))
-            (swap! cam/camera cam/strafe -0.8)))
-        (swap! cam/camera cam/rotate -1.5)))
+    (when (states "ArrowRight")
+      (if (states "Shift")
+        (let [{x' :x y' :y} (cam/strafe current-pos (- extra-step))]
+          (when (not (collides? stage [[x y] [x' y']]))
+            (swap! camera cam/strafe (- step-size))))
+        (swap! camera cam/rotate (- rotate-angle))))
 
-    (when (key-states "ArrowLeft")
-      (if (key-states "Shift")
-        (let [{x' :x y' :y} (cam/strafe camera 2)]
-          (when (not (detect-collision stage [[x y] [x' y']]))
-            (swap! cam/camera cam/strafe 0.8)))
-        (swap! cam/camera cam/rotate 1.5)))
+    (when (states "ArrowLeft")
+      (if (states "Shift")
+        (let [{x' :x y' :y} (cam/strafe current-pos extra-step)]
+          (when (not (collides? stage [[x y] [x' y']]))
+            (swap! camera cam/strafe step-size)))
+        (swap! camera cam/rotate rotate-angle)))
 
-    (when (key-states "ArrowUp")
-      (let [{x' :x y' :y} (cam/move-forward camera 2)]
-        (when (not (detect-collision stage [[x y] [x' y']]))
-          (swap! cam/camera cam/move-forward 0.8))))
+    (when (states "ArrowUp")
+      (let [{x' :x y' :y} (cam/move-forward current-pos extra-step)]
+        (when (not (collides? stage [[x y] [x' y']]))
+          (swap! camera cam/move-forward step-size))))
 
-    (when (key-states "ArrowDown")
-      (let [{x' :x y' :y} (cam/move-forward camera -2)]
-        (when (not (detect-collision stage [[x y] [x' y']]))
-          (swap! cam/camera cam/move-forward -0.8))))))
+    (when (states "ArrowDown")
+      (let [{x' :x y' :y} (cam/move-forward current-pos (- extra-step))]
+        (when (not (collides? stage [[x y] [x' y']]))
+          (swap! cam/camera cam/move-forward (- step-size)))))))
 
 (defn draw-camera
   "Draws `camera` on canvas, specified by `*ctx*`."
@@ -279,7 +282,7 @@
 (defn render
   "Main game loop."
   []
-  (move-camera stage @input/key-states)
+  (move-camera! cam/camera input/key-states stage)
   (when (inside-rectangle @cam/camera stage/goal)
     (swap! cam/camera cam/set-position 12 195 180))
   (let [height (. *canvas* -height)
