@@ -35,7 +35,7 @@
 
 ;; Hanling focus
 
-(defn on-click [event]
+(defn on-click [_event]
   (set! focus true))
 
 (defn release-focus []

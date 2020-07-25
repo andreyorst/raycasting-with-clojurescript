@@ -1,9 +1,9 @@
 (ns raycasting.core
-  (:require [raycasting.camera :as cam])
-  (:require [raycasting.input :as input])
-  (:require [raycasting.stage :as stage])
+  (:require [raycasting.camera :as cam]
+            [raycasting.input :as input]
+            [raycasting.stage :as stage])
   (:require-macros [raycasting.macros
-                    :refer [three-decimal binding*]
+                    :refer [three-decimal]
                     :as m]))
 
 (defonce ^:dynamic *canvas* nil)
@@ -65,7 +65,7 @@
 
 (defn intersection
   "Compute intersection point between two line segments."
-  [[[x1 y1] [x2 y2] :as ray] [[x3 y3] [x4 y4] :as wall]]
+  [[[x1 y1] [x2 y2] :as _ray] [[x3 y3] [x4 y4] :as _wall]]
   (let [x (/ (- (* (- (* x1 y2) (* y1 x2)) (- x3 x4)) (* (- x1 x2) (- (* x3 y4) (* y3 x4))))
              (- (* (- x1 x2) (- y3 y4)) (* (- y1 y2) (- x3 x4))))
         y (/ (- (* (- (* x1 y2) (* y1 x2)) (- y3 y4)) (* (- y1 y2) (- (* x3 y4) (* y3 x4))))
@@ -160,8 +160,7 @@
       (when-let [ray (first rays)]
         (let [{length :length ray-degree :angle n :n color :color} ray]
           (when (< length infinity) ;; skip drawing infinity rays
-            (let [angle-step (/ *fov* *ray-count*)
-                  distance (if *compensate-fisheye*
+            (let [distance (if *compensate-fisheye*
                              (* length (three-decimal (Math/cos ray-degree)))
                              length)
                   wall-height (* (/ (/ height *ray-count*) distance) projection-distance (/ *fov* 4))
@@ -197,16 +196,16 @@
            degree (:degree (cam/rotate camera (- (/ *fov* 2.0))))
            rays '()]
       (if (>= n 0)
-        (do (let [ray-end (cam/move-point ray-start degree infinity)
-                  intersections (find-intersections stage [ray-start ray-end])
-                  shortest-ray (apply min (keys intersections))
-                  {ray-end :end color :color} (intersections shortest-ray)
-                  ray-angle (if *compensate-fisheye*
-                              (angle-between [ray-start ray-end] central-ray)
-                              0)]
-              (recur (dec n)
-                     (+ degree step)
-                     (conj rays {:end ray-end :length shortest-ray :angle ray-angle :n n :color color}))))
+        (let [ray-end (cam/move-point ray-start degree infinity)
+              intersections (find-intersections stage [ray-start ray-end])
+              shortest-ray (apply min (keys intersections))
+              {ray-end :end color :color} (intersections shortest-ray)
+              ray-angle (if *compensate-fisheye*
+                          (angle-between [ray-start ray-end] central-ray)
+                          0)]
+          (recur (dec n)
+                 (+ degree step)
+                 (conj rays {:end ray-end :length shortest-ray :angle ray-angle :n n :color color})))
         rays))))
 
 (defn draw-stage
@@ -290,9 +289,9 @@
         camera @cam/camera
         rays (cast-rays camera stage)]
     (. *ctx* clearRect 0 0 width height)
-    (draw-rays camera rays)
-    (draw-camera camera)
-    (draw-stage stage)
+    #_(draw-rays camera rays)
+    #_(draw-camera camera)
+    #_(draw-stage stage)
     (draw-3d-stage rays)
     (. js/window requestAnimationFrame render)))
 

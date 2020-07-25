@@ -12,3 +12,4 @@
             `(binding [~x ~y] ~acc))
           `(do ~@body)
           (reverse (partition 2 bindings))))
+
