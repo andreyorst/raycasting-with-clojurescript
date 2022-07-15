@@ -17,21 +17,21 @@
   "Updates key state when key is pressed."
   [event]
   (when focus
-    (let [event (if event event (. js/window -event))
-          key (. event -key)]
+    (let [event (if event event (.-event js/window))
+          key (.-key event)]
       (when (valid-key? key)
-        (. event preventDefault)
+        (.preventDefault event)
         (swap! key-states assoc key true)))))
 
 (defn on-key-release
   "Updates key state when key is released."
   [event]
   (when focus
-    (let [event (if event event (. js/window -event))
-          key (. event -key)]
+    (let [event (if event event (.-event js/window))
+          key (.-key event)]
       (when (valid-key? key)
         (swap! key-states assoc key false)
-        (. event preventDefault)))))
+        (.preventDefault event)))))
 
 ;; Hanling focus
 

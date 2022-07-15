@@ -3,29 +3,70 @@
   <head>
     <meta charset="UTF-8">
     <script src="js/compiled/main.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <title>Simple Raycasting with ClojureScript</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
   </head>
   <body>
-    <canvas id="raycaster" width="512" height="224"></canvas></div>
-    <div>
-      <input type="range" id="rayCountSlider"
-             min="10" max="256" step="1"></input>
-      <label for="rayCountSlider">Ray Count: </label>
-      <output name="rayCountValue" id="rayCountOutput"></output>
-    </div>
-    <div>
-      <input type="range" id="fovSlider"
-             min="10" max="360" step="1"></input>
-      <label for="fovSlider">Field of View: </label>
-      <output name="fovSliderValue" id="fovSliderOutput"></output>
-    </div>
-    <div>
-      <input type="checkbox" id="fishEyeCompensation"></input>
-      <label for="fishEyeCompensation"> FishEye compensation</label>
-    </div>
-    <script>
-      window.onload = function() {
+    <main>
+      <div class="info">
+        <h1>Simple Raycasting with ClojureScript</h1>
+        <a href="https://andreyorst.gitlab.io" class="blog_link">Andrey Listopadov</a>
+      </div>
+      <hr>
+      <p>
+        This is a demo page for my post about the raycasting in ClojureScript.
+        If you're interested, you can read more <a href="https://andreyorst.gitlab.io/posts/2020-06-04-simple-ray-casting-with-clojurescript">here</a>.
+      </p>
+      <div class="canvasContainer">
+        <canvas id="raycaster" width="512" height="512"></canvas>
+      </div>
+      <div class="settings">
+        <div>
+          <input type="range" id="rayCountSlider"
+                 min="10" max="256" step="1"></input>
+          <label for="rayCountSlider">Ray Count: </label>
+          <output name="rayCountValue" id="rayCountOutput"></output>
+        </div>
+        <div>
+          <input type="range" id="fovSlider"
+                 min="10" max="360" step="1"></input>
+          <label for="fovSlider">Field of View: </label>
+          <output name="fovSliderValue" id="fovSliderOutput"></output>
+        </div>
+        <div>
+          <input type="checkbox" id="fishEyeCompensation"></input>
+          <label for="fishEyeCompensation"> FishEye compensation</label>
+        </div>
+      </div>
+      <p>
+        To begin the game, click the canvas, and it will grab keyboard input.
+        Press <kbd>up</kbd> and <kbd>down</kbd> keys to move, <kbd>left</kbd> and <kbd>right</kbd> to turn around.
+        <kbd>Shift</kbd> makes <kbd>left</kbd> and <kbd>right</kbd> strafe.
+        Use <kbd>Escape</kbd> to release the keyboard.
+        Try to reach the yellow room to win!
+      </p>
+      <p>
+        Sliders control amount of rays, and angle between rays, changing field of view (FOV).
+        Maximum FOV is 180°, but if the fish-eye compensation is toggled off, the upper boundary chages to 360° (the restriction is needed due to how compensation math is implemented).
+        Note, that there might still be some distortion on higher values of FOV, even when fish-eye compensation is enabled.
+      </p>
+      <p>
+        If you want to learn more, the source code of this page is available <a href="https://gitlab.com/andreyorst/raycasting-with-clojurescript">here</a>.
+        The <a href="https://andreyorst.gitlab.io/posts/2020-06-04-simple-ray-casting-with-clojurescript">blog post</a> also has additional code for drawing the player, overview map, and the rays which intersect with the walls on the map, indicating the view.
+      </p>
+      <script>
+        window.onload = function() {
           raycasting.core.init();
-      };
-    </script>
+        };
+      </script>
+    </main>
+    <footer>
+      <div class="footer_container">
+        <div class="footer_content">
+          © Andrey Listopadov 2020-2022 · This work is licensed under a <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a> · This site source code is MIT licensed.
+        </div>
+      </div>
+    </footer>
   </body>
 </html>

@@ -1,0 +1,167 @@
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+body {
+  line-height: 1;
+  font-size: 18px;
+}
+ol, ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* https://www.paulirish.com/2012/box-sizing-border-box-ftw/ */
+/* apply a natural box layout model to all elements, but allowing components to change */
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+/* styles */
+
+main {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+body {
+  color: #333;
+  background-color: #fbfcfd;
+  margin: 0;
+  font-family: Helvetica, Arial, sans-serif;
+  line-height: 1.75;
+  padding: 0 20px;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid #aaa;
+}
+
+a {
+  color: #624195;
+  text-decoration: none;
+  transition: color 0.1s ease;
+}
+
+a:hover {
+  color: #624195; text-decoration: underline;
+}
+
+p {
+  margin: 20px 0;
+}
+
+em, i {
+  font-style: italic;
+}
+
+strong, b {
+  font-weight: bold;
+}
+
+h1, .blog_link {
+  font-size: 22px;
+  font-weight: bold;
+  margin: 20px 20px 10px 0;
+}
+
+.info {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.canvasContainer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.settings {
+  display: block;
+  padding-left: 64px;
+  margin-bottom: 10px;
+}
+
+kbd {
+  color: #444d56;
+  background-color: #fafbfc;
+  border: solid 1px #c6cbd1;
+  border-bottom-color: #959da5;
+  display: inline-block;
+  padding: 3px 5px;
+  font-size: 14px;
+  line-height: 10px;
+  vertical-align: middle;
+  border-radius: 3px;
+}
+
+footer {
+  max-width: 640px;
+  margin: 20px auto;
+}
+
+.footer_container {
+  text-align: center;
+  padding: 0 20px;
+}
+
+.footer_content {
+  color: #888;
+  max-width: 640px;
+  line-height: 1.25;
+}
+
+@media (max-width: 552px) {
+  main { font-width: 14px; }
+  h1, .blog_link { font-width: 16px; }
+}
+
+@media (prefers-color-scheme: dark) {
+  body {color: #dedddc; background-color: #1e1e1e}
+  a {color: #7a5fa4;}
+  a:hover {color: #7a5fa4;}
+  kbd {background-color: #161b22; color: #dedddc; border: solid 1px rgb(57, 63, 71); border-bottom-color: rgb(37, 43, 51);}
+}
